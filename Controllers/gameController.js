@@ -5,7 +5,7 @@ const validateSession = require('../Middleware/validate-session');
 //! POST  C
 
 router.post('/', validateSession, (req, res) => {
-    const gameFromRequest ={
+    const gameFromRequest = {
         title: req.body.game.title,
         playerCount: req.body.game.playerCount,
         winGame: req.body.game.winGame,
@@ -17,6 +17,7 @@ router.post('/', validateSession, (req, res) => {
 
     Game.create(gameFromRequest)
         .then(game => res.statusMessage(200).json(game))
+        .then(console.log('test info logged'))
         .catch(err => res.json(req.errors))
 })
 
@@ -55,7 +56,7 @@ router.delete('/:id', (req, res) => {
         }
     })
     .then(game => res.sendStatus(200).json(game))
-    .then(console.log(`${game} has been removed.`))
+    // .then(console.log(`${game} has been removed.`))
     .catch(err => res.json({ error: err }))
 })
 

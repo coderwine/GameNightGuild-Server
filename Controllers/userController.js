@@ -30,26 +30,30 @@ router.post('/signup', (req, res) => {
 router.post('/login', (req, res) => {
     User.findOne({
         where: {
-            email: req.body.email
+            userName: req.body.user.userName
         }
     }).then(user => {
         if(user){
-        bcrypt.compare(req.body.passwordHash, user.passwordHash, (err, matches) => {
-            if(matches){
-                let token = jwt.sign({ id: user.id}, process.env.JWT_SECRET, { expiresIn: 60*60*24 })
-                res.json({
-                    user: user,
-                    message: 'Welcome Fellow Guild Member!',
-                    sessionToken: token
-                })
+            bcrypt.compare(req.body.user.passwordHash, user.passwordHash, (err, matches) => {
+                if(matches){
+                    let token = jwt.sign({ id: user.id}, process.env.JWT_SECRET, { expiresIn: 60*60*24 })
+                    res.json({
+                        user: user,
+                        message: 'Welcome Fellow Guild Member!',
+                        sessionToken: token
+                    })
             } else {
                 res.status(502).send({error: 'The Gateway was Bad...'})
             }
         })
-    } else {
-        res.status(500).send({error: 'Your Membership Authentication did not meet our list.'})
-    }
-    }, err => res.status(501).send({error: 'Failed to process'}))
+        } else {
+            res.status(500).send({error: 'Your Membership Authentication did not meet our list.'})
+        }
+        },
+        function (err) { 
+            res.status(501).send({error: 'Failed to process' })
+        }
+    )
 })
 
 module.exports = router;

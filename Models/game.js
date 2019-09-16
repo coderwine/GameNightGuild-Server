@@ -20,8 +20,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATEONLY,  
             allowNull: false
         },
+        // rating: {
+        //     type: DataTypes.RANGE(DataTypes.INTEGER),
+        //     allowNull: true
+        // },
         rating: {
-            type: DataTypes.RANGE(DataTypes.INTEGER),
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         comments: {
